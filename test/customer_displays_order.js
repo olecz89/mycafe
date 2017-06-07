@@ -6,19 +6,24 @@ var chai = require("chai"),
 
 
 describe("Customer displays order", function() {
-  context("Given that the order is empty", function() {
-    beforeEach(function() {
-      var orderDAO = {
-        byId: sinon.stub()
-      },
-          orderSystem = orderSystemWith(orderDAO);
+  beforeEach(function() {
+    var orderDAO = {
+      byId: sinon.stub()
+    },
+    this.orderSystem = orderSystemWith(this.orderDAO);
+  });
+  context("Given that the order is empty", function () {
+    beforeEach(function () {
+      this.orderId = "some empty order id";
+      this.orderDAO.byId.withArgs(this.orderId).returns([]);
 
-      orderDAO.byId..withArgs("some empty order id").returns([]);
-      
-      this.result = orderSystem.display("some empty order id");
+      this.result = this.orderSystem.display(this.orderId);
     });
+  });
 
-    it("will show no order item");
+    it("will show no order items", function () {
+      expect(this.result).to.have.property("items").that.is.empty;
+    });
     it("will show 0 as the total price");
     it("will only be possible to add a beverage");
   });
